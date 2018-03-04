@@ -6,8 +6,9 @@
 
 
 var pic = document.getElementById("vimage");
-var stop_btn = document.getElementById("stop")
-var start_btn = document.getElementById("start")
+var stop_btn = document.getElementById("stop");
+var dvd_btn = document.getElementById("dvd");
+var circle_btn = document.getElementById("circle");
 
 
 var start = true;
@@ -16,11 +17,30 @@ var dx = 2;
 var x= 150;
 var y = 150;
 var xlink = 'http://www.w3.org/1999/xlink';
+var r = 25; 
+var dr = 5;
 
-var loop = function(){
-    dy = 3;
-    dx = 2;
-    setInterval(drawDvd, 30);
+var id = 0;
+
+var start = false;
+
+var loop_d = function(){
+    if (!start){
+        clear();
+        dy = 3;
+        dx = 2;
+        id = setInterval(drawDvd, 30);
+        start = true;
+    };
+};
+
+var loop_c = function(){
+    if (!start){
+        clear();
+        dr = 5;
+        id = setInterval(drawDot, 35);
+        start = true;
+    };
 };
 
 var drawDvd = function(){
@@ -30,17 +50,13 @@ var drawDvd = function(){
     
     clear();
     
-    if (start){
-        start = false;
-    }
     if (x == 0 || x == 400){
         dx = -1 * dx;
     }
     if (y == 0 || y >= 400){
         dy = -1 * dy;
     }
-    var anim = document.createElementNS(
-    "http://www.w3.org/2000/svg", "animate");
+
     img.setAttributeNS(xlink, 'xlink:href', 'dvd.png');
     img.setAttributeNS(null,'width', '100');
     img.setAttributeNS(null,'height', '100');
@@ -54,14 +70,36 @@ var drawDvd = function(){
  };
 
 
+
+var drawDot = function(){
+    
+    clear();
+    
+    var c = document.createElementNS(
+    "http://www.w3.org/2000/svg", "circle");
+    c.setAttribute("cx", 200);
+    c.setAttribute("cy", 200);
+    c.setAttribute("r", r);
+    c.setAttribute("fill", "red");
+    c.setAttribute("stroke", "black");
+    pic.appendChild(c);
+    
+    
+    if (r > 250 || r < 25){
+        dr = -dr;
+    };
+    
+
+    r+= dr
+    
+ };
+
 var stop = function(){
-    dx = 0;
-    dy = 0;
-};
-
-var start = function(){
+    clearInterval(id);
+    start = false;
 
 };
+
 
 var clear = function(){
     while (pic.firstChild) {
@@ -71,5 +109,6 @@ var clear = function(){
 };
 
 
-start_btn.addEventListener("click", loop);
+dvd_btn.addEventListener("click", loop_d);
+circle_btn.addEventListener("click", loop_c);
 stop_btn.addEventListener("click", stop);
