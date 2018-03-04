@@ -6,21 +6,25 @@
 
 
 var pic = document.getElementById("vimage");
-var btn = document.getElementById("clear")
+var stop_btn = document.getElementById("stop")
+var start_btn = document.getElementById("start")
 
 
 var start = true;
 var dy = 3;
 var dx = 2;
+var x= 150;
+var y = 150;
 var xlink = 'http://www.w3.org/1999/xlink';
 
 var loop = function(){
-    while (true){
-     drawDvd();   
-    }
+    dy = 3;
+    dx = 2;
+    setInterval(drawDvd, 30);
 };
 
 var drawDvd = function(){
+    
     var img = document.createElementNS(
     "http://www.w3.org/2000/svg", "image");
     
@@ -47,11 +51,17 @@ var drawDvd = function(){
     
     x += dx;
     y += dy;
-    
-
-
-    
  };
+
+
+var stop = function(){
+    dx = 0;
+    dy = 0;
+};
+
+var start = function(){
+
+};
 
 var clear = function(){
     while (pic.firstChild) {
@@ -61,5 +71,5 @@ var clear = function(){
 };
 
 
-pic.addEventListener("click", drawDvd);
-btn.addEventListener("click", clear);
+start_btn.addEventListener("click", loop);
+stop_btn.addEventListener("click", stop);
